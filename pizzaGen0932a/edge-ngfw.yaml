@@ -1,1 +1,33 @@
-
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: ngfw
+---
+apiVersion: vmoperator.vmware.com/v1alpha1
+kind: VirtualMachine
+metadata:
+  name: pa-ngfw-11.2
+  namespace: ngfw
+  annotations:
+    vmoperator.vmware.com/image-supported-check: disable
+spec:
+  className: best-effort-small
+  imageName: 192.168.100.242/downloads/win10.ova
+  powerState: poweredOff
+  networkInterfaces:
+  - networkName: "VM Internal Network"
+    ethernetCardType: "vmxnet3"
+  vmMetadata:
+    configMapName: user-data-windows-1
+    transport: CloudInit
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+    name: user-data-windows-1
+    namespace: ngfw
+data:
+  user-data: |
+    #ps1
+    #Install-WindowsFeature -Name Print-Server
+    #Restart-Computer
