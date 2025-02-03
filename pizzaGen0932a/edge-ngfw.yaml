@@ -12,22 +12,8 @@ metadata:
     vmoperator.vmware.com/image-supported-check: disable
 spec:
   className: best-effort-small
-  imageName: 192.168.100.242/downloads/win10.ova
+  imageName: 192.168.100.242:8080/PA-VM-ESX-11.2.0.ova
   powerState: poweredOff
   networkInterfaces:
   - networkName: "VM Internal Network"
     ethernetCardType: "vmxnet3"
-  vmMetadata:
-    configMapName: user-data-windows-1
-    transport: CloudInit
----
-apiVersion: v1
-kind: ConfigMap
-metadata:
-    name: user-data-windows-1
-    namespace: ngfw
-data:
-  user-data: |
-    #ps1
-    #Install-WindowsFeature -Name Print-Server
-    #Restart-Computer
